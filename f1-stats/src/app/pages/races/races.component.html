@@ -1,0 +1,16 @@
+<div class="grid">
+  <mat-card class="f1-card" *ngFor="let race of races">
+    <mat-card-header>
+      <mat-card-title>{{ race.raceName }}</mat-card-title>
+      <mat-card-subtitle>{{ race.Circuit.circuitName }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="race.track_img" alt="Race Name" />
+    <mat-card-content>
+      <p>{{ race.date }} {{ race.time }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="warn">Results</button>
+      <button mat-raised-button color="accent">Comment</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
