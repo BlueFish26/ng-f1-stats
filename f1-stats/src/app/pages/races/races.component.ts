@@ -1,7 +1,10 @@
 import { CompileShallowModuleMetadata } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { F1Service } from 'src/app/services/f1-service';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { AppState, Race, selectRaces } from 'src/app/models/races.models';
+
 
 @Component({
   selector: 'app-races',
@@ -9,29 +12,24 @@ import { F1Service } from 'src/app/services/f1-service';
   styleUrls: ['./races.component.css']
 })
 export class RacesComponent implements OnInit {
+  races$: Observable<Race[]> = this.store.select(store => store.races);
 
-  constructor(private route: ActivatedRoute, private f1Service: F1Service) { }
-
-  raceId: Number;
-  races: any;
+  raceList: Race[];
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store<{ races: Race[] }>) {
+  }
 
   ngOnInit(): void {
-
+    this.store.dispatch({ type: "[RACES] Load Races" });
     // this.route.params.subscribe(
     //   (params: Params) => {
     //     this.raceId = params.id;
     //     console.log('RaceId', this.raceId);
     //   }
     // );
-
-    this.f1Service.getRaces().subscribe(
-      (data: any) => {
-        console.log(data)
-        this.races = data;
-      }
-    )
-
-
   }
+
+
 
 }

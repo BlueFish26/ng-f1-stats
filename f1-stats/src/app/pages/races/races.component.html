@@ -1,5 +1,5 @@
 <div class="grid">
-  <mat-card class="f1-card" *ngFor="let race of races">
+  <mat-card class="f1-card" *ngFor="let race of races$ | async">
     <mat-card-header>
       <mat-card-title>{{ race.raceName }}</mat-card-title>
       <mat-card-subtitle>{{ race.Circuit.circuitName }}</mat-card-subtitle>

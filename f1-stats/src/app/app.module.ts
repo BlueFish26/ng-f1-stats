@@ -18,6 +18,11 @@ import { RaceResultsComponent } from './pages/race-results/race-results.componen
 import { ConstructorsComponent } from './pages/constructors/constructors.component';
 import { DriversComponent } from './pages/drivers/drivers.component';
 
+import { StoreModule } from "@ngrx/store";
+import { raceReducer } from "./reducers/f1.reducer";
+import { EffectsModule } from '@ngrx/effects';
+import { RacesEffects } from './effects/races.effects';
+
 
 @NgModule({
   declarations: [
@@ -32,9 +37,19 @@ import { DriversComponent } from './pages/drivers/drivers.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatToolbarModule, MatIconModule, MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    StoreModule.forRoot(
+      {
+        races: raceReducer,
+        //racesLoaded: raceReducer,
+        //s: raceReducer
+      }
+    ),
+    EffectsModule.forRoot([RacesEffects])
   ],
   providers: [F1Service],
   bootstrap: [AppComponent]

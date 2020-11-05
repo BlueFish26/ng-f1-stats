@@ -4,6 +4,6 @@
         "node_modules/": true
     },
     "editor.formatOnSave": true,
-    "editor.fontFamily": "'Source Code Pro Semibold', 'Courier New', monospace",
+    "editor.fontFamily": "'Source Code Pro Medium', 'Courier New', monospace",
     "editor.fontLigatures": null
 }
