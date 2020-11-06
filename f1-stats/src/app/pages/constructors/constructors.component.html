@@ -1,1 +1,25 @@
-<p>constructors works!</p>
+<div class="grid">
+  <mat-card class="f1-card" *ngFor="let constructor of constructors$ | async">
+    <mat-card-header>
+      <mat-card-title>{{ constructor.Constructor.name }}</mat-card-title>
+      <mat-card-subtitle>{{
+        constructor.Constructor.nationality
+      }}</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      [src]="constructor.constructor_img"
+      [alt]="constructor.name | uppercase"
+    />
+    <mat-card-content>
+      <p>Total Poits: {{ constructor.points }}</p>
+      <p>Total Wins: {{ constructor.wins }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="warn">Results</button>
+      <button mat-raised-button color="accent" (click)="openDialog()">
+        Drivers
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

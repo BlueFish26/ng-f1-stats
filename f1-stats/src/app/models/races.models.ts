@@ -1,4 +1,5 @@
-import { createSelector } from '@ngrx/store';
+import { QualifyingResult } from './results.models';
+
 export interface Race {
     date: string,
     raceName: string,
@@ -7,7 +8,8 @@ export interface Race {
     time: string,
     track_img: string,
     url: string
-    Circuit: Circuit
+    Circuit: Circuit,
+    QualifyingResult: QualifyingResult[]
 }
 
 export interface Circuit {

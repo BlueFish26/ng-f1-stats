@@ -3,8 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import { map, mergeMap, catchError, concatMap, withLatestFrom, tap } from 'rxjs/operators';
-import { RacesLoaded } from '../actions/races.actions';
+import { RacesLoaded, RacesLoadQualifyingStart, RacesLoadQualifyingSuccess } from '../actions/races.actions';
 import { Race } from '../models/races.models';
+import { QualifyingResult } from '../models/results.models';
 import { F1Service } from "../services/f1-service";
 
 @Injectable()
@@ -31,6 +32,32 @@ export class RacesEffects {
             }
         })
     )
+    );
+
+    loadQualifyingResults$ = createEffect(
+        () => this.actions$.pipe(
+            ofType(RacesLoadQualifyingStart),
+            concatMap(action => of(action).pipe(
+                withLatestFrom(this.store.select(store => store.races)),
+            )),
+            mergeMap(([action, races]) => {
+                //check if qualy for this round is loaded
+                // if (races.length > 0) {
+                //     console.log('Races Loaded Already');
+                //     return []; //to prevent error when reloading
+                //} else {
+                return this.f1Service.getQualifyingResults(action.round)
+                    .pipe(
+                        map(results => {
+                            console.log("results", results);
+                            return RacesLoadQualifyingSuccess({ round: action.round, payload: <QualifyingResult[]>results });
+                            //return { type: '[RACES] Load Success', payload: <QualifyingResult[]>results }
+                        }),
+                        catchError(() => EMPTY)
+                    )
+                //}
+            })
+        )
     );
 
     constructor(

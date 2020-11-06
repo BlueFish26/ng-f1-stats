@@ -11,6 +11,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { F1Service } from "./services/f1-service";
 import { RacesComponent } from './pages/races/races.component';
@@ -19,9 +21,11 @@ import { ConstructorsComponent } from './pages/constructors/constructors.compone
 import { DriversComponent } from './pages/drivers/drivers.component';
 
 import { StoreModule } from "@ngrx/store";
-import { raceReducer } from "./reducers/f1.reducer";
+import { constructorReducer, raceReducer } from "./reducers/f1.reducer";
 import { EffectsModule } from '@ngrx/effects';
 import { RacesEffects } from './effects/races.effects';
+import { ContructorsEffects } from './effects/constructors.effects';
+import { QualifyingResultsComponent } from './components/qualifying-results/qualifying-results.component';
 
 
 @NgModule({
@@ -30,7 +34,8 @@ import { RacesEffects } from './effects/races.effects';
     RacesComponent,
     RaceResultsComponent,
     ConstructorsComponent,
-    DriversComponent
+    DriversComponent,
+    QualifyingResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,14 +47,15 @@ import { RacesEffects } from './effects/races.effects';
     MatMenuModule,
     MatCardModule,
     MatButtonModule,
+    MatExpansionModule,
+    MatDialogModule,
     StoreModule.forRoot(
       {
         races: raceReducer,
-        //racesLoaded: raceReducer,
-        //s: raceReducer
+        constructors: constructorReducer
       }
     ),
-    EffectsModule.forRoot([RacesEffects])
+    EffectsModule.forRoot([RacesEffects, ContructorsEffects])
   ],
   providers: [F1Service],
   bootstrap: [AppComponent]

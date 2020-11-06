@@ -1,10 +1,10 @@
-import { CompileShallowModuleMetadata } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { AppState, Race, selectRaces } from 'src/app/models/races.models';
-
+import { Observable, } from 'rxjs';
+import { Race } from 'src/app/models/races.models';
+import { MatDialog } from '@angular/material/dialog';
+import { QualifyingResultsComponent } from 'src/app/components/qualifying-results/qualifying-results.component';
 
 @Component({
   selector: 'app-races',
@@ -12,11 +12,11 @@ import { AppState, Race, selectRaces } from 'src/app/models/races.models';
   styleUrls: ['./races.component.css']
 })
 export class RacesComponent implements OnInit {
+
   races$: Observable<Race[]> = this.store.select(store => store.races);
 
-  raceList: Race[];
   constructor(
-    private route: ActivatedRoute,
+    private dialog: MatDialog,
     private store: Store<{ races: Race[] }>) {
   }
 
@@ -30,6 +30,12 @@ export class RacesComponent implements OnInit {
     // );
   }
 
-
+  openDialog(round: string) {
+    const dialogRef = this.dialog.open(QualifyingResultsComponent, { data: round });
+    console.log("round", round)
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
 }
