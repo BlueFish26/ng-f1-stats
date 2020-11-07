@@ -1,1 +1,6 @@
 <p>qualifying-results works!</p>
+<div *ngIf="qualiyingResult">
+  <div *ngFor="let result of qualiyingResult">
+    {{ result.position }} - {{ result.Driver.code }} - {{ result.Q3 }}
+  </div>
+</div>

@@ -21,18 +21,14 @@ const _raceReducer = createReducer(
         }),
     on(RacesLoaded, (state, action) => state),
     on(RacesLoadQualifyingSuccess, (state, action) => {
-        const updatedState = state.reduce(
+        return state.reduce(
             (previousValue, currentValue, currentIndex, array) => {
-                console.log(previousValue, currentValue, array, currentIndex);
                 if (currentValue.round == action.round) {
-                    currentValue = { ...currentValue, QualifyingResult: action.payload }
+                    currentValue = { ...currentValue, QualifyingResult: action.payload } //use spread operator to avoid dynamic property generation errors
                 };
-                console.log(currentValue);
                 previousValue.push(currentValue);
                 return previousValue;
             }, []);
-        console.log("Updated Races", updatedState);
-        return state;
     }
     )
 );

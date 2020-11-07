@@ -13,7 +13,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./qualifying-results.component.css']
 })
 export class QualifyingResultsComponent implements OnInit {
-  //@Input() round: string;
+
   constructor(private store: Store<{ races: Race[] }>, @Inject(MAT_DIALOG_DATA) public round: string,) { }
 
   races$: Observable<Race[]> = this.store.select(store => store.races);
@@ -21,19 +21,19 @@ export class QualifyingResultsComponent implements OnInit {
   qualiyingResult: QualifyingResult[];
 
   ngOnInit(): void {
-    console.log(this.round)
     this.store.dispatch(RacesLoadQualifyingStart({ round: this.round }));
-    this.races$.subscribe((data) => {
-      console.log("races", data);
-      // if (races) {
-      //   let filteredRace = races.filter(r => r.round == this.round)[0];
-      //   console.log(filteredRace);
 
-      //   if (filteredRace.QualifyingResult) {
-      //     this.qualiyingResult = filteredRace.QualifyingResult
-      //     console.log(this.qualiyingResult);
-      //   }
-      // }
+    this.races$.subscribe((races) => {
+      console.log("races", races);
+      if (races) {
+        let filteredRace = races.filter(r => r.round == this.round)[0];
+        console.log(filteredRace);
+
+        if (filteredRace.QualifyingResult) {
+          this.qualiyingResult = filteredRace.QualifyingResult
+          console.log(this.qualiyingResult);
+        }
+      }
     });
 
   }

@@ -41,21 +41,22 @@ export class RacesEffects {
                 withLatestFrom(this.store.select(store => store.races)),
             )),
             mergeMap(([action, races]) => {
-                //check if qualy for this round is loaded
-                // if (races.length > 0) {
-                //     console.log('Races Loaded Already');
-                //     return []; //to prevent error when reloading
-                //} else {
-                return this.f1Service.getQualifyingResults(action.round)
-                    .pipe(
-                        map(results => {
-                            console.log("results", results);
-                            return RacesLoadQualifyingSuccess({ round: action.round, payload: <QualifyingResult[]>results });
-                            //return { type: '[RACES] Load Success', payload: <QualifyingResult[]>results }
-                        }),
-                        catchError(() => EMPTY)
-                    )
-                //}
+                let thisRace: Race = races.filter((race: Race) => race.round == action.round)[0];
+                if (thisRace.QualifyingResult.length == 0) {
+                    return this.f1Service.getQualifyingResults(action.round)
+                        .pipe(
+                            map(results => {
+                                console.log("results", results);
+                                return RacesLoadQualifyingSuccess({ round: action.round, payload: <QualifyingResult[]>results });
+                                //return { type: '[RACES] Load Success', payload: <QualifyingResult[]>results }
+                            }),
+                            catchError(() => EMPTY)
+                        )
+                } else {
+                    console.log('This qualy is already loaded');
+                    return [];
+                }
+
             })
         )
     );
