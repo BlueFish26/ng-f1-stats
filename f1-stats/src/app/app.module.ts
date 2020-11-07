@@ -13,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { F1Service } from "./services/f1-service";
 import { RacesComponent } from './pages/races/races.component';
@@ -26,6 +28,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { RacesEffects } from './effects/races.effects';
 import { ContructorsEffects } from './effects/constructors.effects';
 import { QualifyingResultsComponent } from './components/qualifying-results/qualifying-results.component';
+import { environment } from 'src/environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 @NgModule({
@@ -49,12 +53,18 @@ import { QualifyingResultsComponent } from './components/qualifying-results/qual
     MatButtonModule,
     MatExpansionModule,
     MatDialogModule,
+    MatTableModule,
+    MatProgressBarModule,
     StoreModule.forRoot(
       {
         races: raceReducer,
         constructors: constructorReducer
       }
     ),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
     EffectsModule.forRoot([RacesEffects, ContructorsEffects])
   ],
   providers: [F1Service],

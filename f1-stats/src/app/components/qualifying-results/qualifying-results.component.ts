@@ -15,14 +15,12 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class QualifyingResultsComponent implements OnInit {
 
   constructor(private store: Store<{ races: Race[] }>, @Inject(MAT_DIALOG_DATA) public round: string,) { }
-
   races$: Observable<Race[]> = this.store.select(store => store.races);
-
-  qualiyingResult: QualifyingResult[];
-
+  qualiyingResult: QualifyingResult[] = [];
+  displayedColumns: string[] = ['position', 'name', 'Q1', 'Q2', 'Q3']
+  dataSource = [];
   ngOnInit(): void {
-    this.store.dispatch(RacesLoadQualifyingStart({ round: this.round }));
-
+    //this.store.dispatch(RacesLoadQualifyingStart({ round: this.round }));
     this.races$.subscribe((races) => {
       console.log("races", races);
       if (races) {
@@ -32,6 +30,7 @@ export class QualifyingResultsComponent implements OnInit {
         if (filteredRace.QualifyingResult) {
           this.qualiyingResult = filteredRace.QualifyingResult
           console.log(this.qualiyingResult);
+          this.dataSource = this.qualiyingResult;
         }
       }
     });

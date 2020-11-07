@@ -5,6 +5,7 @@ import { Observable, } from 'rxjs';
 import { Race } from 'src/app/models/races.models';
 import { MatDialog } from '@angular/material/dialog';
 import { QualifyingResultsComponent } from 'src/app/components/qualifying-results/qualifying-results.component';
+import { RacesLoadQualifyingStart } from 'src/app/actions/races.actions';
 
 @Component({
   selector: 'app-races',
@@ -31,6 +32,7 @@ export class RacesComponent implements OnInit {
   }
 
   openDialog(round: string) {
+    this.store.dispatch(RacesLoadQualifyingStart({ round: round }));
     const dialogRef = this.dialog.open(QualifyingResultsComponent, { data: round });
     console.log("round", round)
     dialogRef.afterClosed().subscribe(result => {

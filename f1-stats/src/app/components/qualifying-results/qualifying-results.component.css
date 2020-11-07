@@ -1,0 +1,8 @@
+.container {
+  width: 50vw;
+  height: 50vh;
+  overflow-y: scroll;
+}
+table {
+  width: 100%;
+}
