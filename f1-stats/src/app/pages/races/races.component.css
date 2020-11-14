@@ -1,1 +1,38 @@
+.mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+.mat-accordion {
+  max-width: 768px;
+}
+.mat-expansion-panel {
+  margin: 2px 3px;
+}
+.mat-list-item {
+  margin-bottom: 5px;
+}
+.flag {
+  width: 30px;
+  margin-right: 10px;
+}
+.race-panel-content {
+  display: flex;
+  flex-direction: row;
+}
 
+.race-img {
+  width: 40%;
+}
+.race-img img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.race-winners {
+  width: 60%;
+}
+
+.driver {
+  width: 50px;
+  margin-right: 10px;
+  margin-bottom: 3px;
+}

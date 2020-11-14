@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, of } from 'rxjs';
 import { map, mergeMap, catchError, concatMap, withLatestFrom, tap } from 'rxjs/operators';
-import { RacesLoadQualifyingStart, RacesLoadQualifyingSuccess } from '../actions/races.actions';
+import { RacesLoadQualifyingStart, RacesLoadQualifyingSuccess, RacesLoadRaceResultStart, RacesLoadRaceResultSuccess } from '../actions/races.actions';
 import { Race } from '../models/races.models';
-import { QualifyingResult } from '../models/results.models';
+import { QualifyingResult, RaceResult } from '../models/results.models';
 import { F1Service } from "../services/f1-service";
 
 @Injectable()
@@ -48,7 +48,7 @@ export class RacesEffects {
                     return this.f1Service.getQualifyingResults(action.round)
                         .pipe(
                             map(results => {
-                                console.log("results", results);
+                                console.log("qualy results", results);
                                 return RacesLoadQualifyingSuccess({ round: action.round, payload: <QualifyingResult[]>results });
                                 //return { type: '[RACES] Load Success', payload: <QualifyingResult[]>results }
                             }),
@@ -56,6 +56,33 @@ export class RacesEffects {
                         )
                 } else {
                     console.log('This qualy is already loaded');
+                    return [];
+                }
+
+            })
+        )
+    );
+
+    loadRaceResults$ = createEffect(
+        () => this.actions$.pipe(
+            ofType(RacesLoadRaceResultStart),
+            concatMap(action => of(action).pipe(
+                withLatestFrom(this.store.select(store => store.races)),
+            )),
+            mergeMap(([action, races]) => {
+                let thisRace: Race = races.filter((race: Race) => race.round == action.round)[0];
+                if (thisRace.QualifyingResult.length == 0) {
+                    return this.f1Service.getRaceResults(action.round)
+                        .pipe(
+                            map(results => {
+                                console.log("race results", results);
+                                return RacesLoadRaceResultSuccess({ round: action.round, payload: <RaceResult[]>results });
+
+                            }),
+                            catchError(() => EMPTY)
+                        )
+                } else {
+                    console.log('This race result is already loaded');
                     return [];
                 }
 

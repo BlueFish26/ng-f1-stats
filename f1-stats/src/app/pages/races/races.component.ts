@@ -5,7 +5,7 @@ import { Observable, } from 'rxjs';
 import { Race } from 'src/app/models/races.models';
 import { MatDialog } from '@angular/material/dialog';
 import { QualifyingResultsComponent } from 'src/app/components/qualifying-results/qualifying-results.component';
-import { RacesLoadQualifyingStart } from 'src/app/actions/races.actions';
+import { RacesLoadQualifyingStart, RacesLoadRaceResultStart } from 'src/app/actions/races.actions';
 
 @Component({
   selector: 'app-races',
@@ -20,8 +20,9 @@ export class RacesComponent implements OnInit {
     private dialog: MatDialog,
     private store: Store<{ races: Race[] }>) {
   }
-
+  panelOpenState = false;
   ngOnInit(): void {
+    console.log("Panel State:", this.panelOpenState);
     this.store.dispatch({ type: "[RACES] Load Races" });
     // this.route.params.subscribe(
     //   (params: Params) => {
@@ -31,13 +32,34 @@ export class RacesComponent implements OnInit {
     // );
   }
 
-  openDialog(round: string) {
+  // openDialog(round: string) {
+  //   this.loadQualifyingResults(round);
+  //   const dialogRef = this.dialog.open(QualifyingResultsComponent, { data: round });
+  //   console.log("round", round)
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log(`Dialog result: ${result}`);
+  //   });
+  // }
+
+  togglePanel(round: string) {
+    this.panelOpenState = true;
+    this.loadRaceResults(round);
+    //this.loadQualifyingResults(round);
+  }
+
+  loadRaceResults(round: string) {
+    this.store.dispatch(RacesLoadRaceResultStart({ round: round }));
+    this.panelOpenState = true;
+  }
+
+  loadQualifyingResults(round: string) {
     this.store.dispatch(RacesLoadQualifyingStart({ round: round }));
-    const dialogRef = this.dialog.open(QualifyingResultsComponent, { data: round });
-    console.log("round", round)
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    this.panelOpenState = true;
+  }
+
+
+  trackByRound(index: number, race: any): string {
+    return race.round;
   }
 
 }

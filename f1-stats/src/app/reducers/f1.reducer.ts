@@ -1,7 +1,7 @@
 import { AppState, Race } from "../models/races.models";
 import { Constructor } from "../models/constructors.models";
 import { createReducer, INITIAL_REDUCERS, on } from '@ngrx/store';
-import { RacesLoadStart, RacesLoadSuccess, RacesLoaded, RacesLoadQualifyingSuccess } from '../actions/races.actions';
+import { RacesLoadStart, RacesLoadSuccess, RacesLoaded, RacesLoadQualifyingSuccess, RacesLoadRaceResultSuccess } from '../actions/races.actions';
 import { ConstructorsLoadStart, ConstructorsLoadSuccess, ConstructorsLoaded } from '../actions/constructors.actions';
 import { QualifyingResult } from '../models/results.models';
 
@@ -29,8 +29,17 @@ const _raceReducer = createReducer(
                 previousValue.push(currentValue);
                 return previousValue;
             }, []);
-    }
-    )
+    }),
+    on(RacesLoadRaceResultSuccess, (state, action) => {
+        return state.reduce(
+            (previousValue, currentValue, currentIndex, array) => {
+                if (currentValue.round == action.round) {
+                    currentValue = { ...currentValue, RaceResult: action.payload } //use spread operator to avoid dynamic property generation errors
+                };
+                previousValue.push(currentValue);
+                return previousValue;
+            }, []);
+    })
 );
 
 export function raceReducer(state, action) {

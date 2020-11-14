@@ -1,4 +1,79 @@
 <div class="grid">
+  <mat-accordion
+    style="width: 100%"
+    *ngFor="let race of races$ | async; trackBy: trackByRound"
+    multi
+  >
+    <mat-expansion-panel
+      (opened)="togglePanel(race.round)"
+      (closed)="panelOpenState = false"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <img
+            class="flag"
+            [src]="race.country_flag_img"
+            [alt]="race.Circuit.Location.country"
+          />
+          Round {{ race.round }} {{ race.raceName }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ race.Circuit.circuitName }} -
+          {{ race.date | date: "d MMM y" }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <div class="race-panel-content">
+          <div class="race-img">
+            <img [src]="race.track_img" alt="Race Name" />
+          </div>
+          <div class="race-winners">
+            <span *ngIf="race.RaceResult.length == 0"
+              >Loading Race results...</span
+            >
+            <mat-list role="list" *ngIf="race.RaceResult.length > 1">
+              <mat-list-item role="listitem">
+                <img
+                  class="driver"
+                  [src]="race.RaceResult[0].Driver.helmet_img"
+                  alt=""
+                />
+                P1: {{ race.RaceResult[0].Driver.permanentNumber }} -
+                {{ race.RaceResult[0].Driver.givenName | uppercase }}
+                {{ race.RaceResult[0].Driver.familyName | uppercase }} -
+                {{ race.RaceResult[0].Time.time }}</mat-list-item
+              >
+              <mat-list-item role="listitem">
+                <img
+                  class="driver"
+                  [src]="race.RaceResult[1].Driver.helmet_img"
+                  alt=""
+                />
+                P2: {{ race.RaceResult[1].Driver.permanentNumber }} -
+                {{ race.RaceResult[1].Driver.givenName | uppercase }}
+                {{ race.RaceResult[1].Driver.familyName | uppercase }} -
+                {{ race.RaceResult[1].Time.time }}</mat-list-item
+              >
+              <mat-list-item role="listitem">
+                <img
+                  class="driver"
+                  [src]="race.RaceResult[2].Driver.helmet_img"
+                  alt=""
+                />
+                P3: {{ race.RaceResult[2].Driver.permanentNumber }} -
+                {{ race.RaceResult[2].Driver.givenName | uppercase }}
+                {{ race.RaceResult[2].Driver.familyName | uppercase }} -
+                {{ race.RaceResult[2].Time.time }}</mat-list-item
+              >
+              <br />
+              <button mat-raised-button color="warn">Full Results</button>
+            </mat-list>
+          </div>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <!-- 
   <mat-card class="f1-card" *ngFor="let race of races$ | async">
     <mat-card-header>
       <mat-card-title>
@@ -19,5 +94,5 @@
       </button>
       <button mat-raised-button color="accent">Comment</button>
     </mat-card-actions>
-  </mat-card>
+  </mat-card> -->
 </div>

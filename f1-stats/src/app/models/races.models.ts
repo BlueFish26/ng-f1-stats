@@ -1,4 +1,4 @@
-import { QualifyingResult } from './results.models';
+import { QualifyingResult, RaceResult } from './results.models';
 
 export interface Race {
     date: string,
@@ -7,9 +7,11 @@ export interface Race {
     season: string,
     time: string,
     track_img: string,
+    country_flag_img: string,
     url: string
     Circuit: Circuit,
-    QualifyingResult: QualifyingResult[]
+    QualifyingResult: QualifyingResult[],
+    RaceResult: RaceResult[]
 }
 
 export interface Circuit {

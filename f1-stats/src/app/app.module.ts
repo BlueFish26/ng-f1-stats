@@ -15,6 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
 
 import { F1Service } from "./services/f1-service";
 import { RacesComponent } from './pages/races/races.component';
@@ -55,6 +56,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     MatDialogModule,
     MatTableModule,
     MatProgressBarModule,
+    MatListModule,
     StoreModule.forRoot(
       {
         races: raceReducer,
